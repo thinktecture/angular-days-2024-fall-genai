@@ -5,6 +5,7 @@ import {
   CreateMLCEngine,
   MLCEngine,
 } from '@mlc-ai/web-llm';
+import { Todo } from './todo';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
   protected readonly reply = signal('');
 
   // LAB #5
+  protected readonly todos = signal<Todo[]>([]);
 
   async ngOnInit() {
     // LAB #2
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit {
 
   addTodo(text: string) {
     // LAB #5
+    this.todos.update(todos => [...todos, { done: false, text }]);
   }
 
   toggleTodo(index: number) {
