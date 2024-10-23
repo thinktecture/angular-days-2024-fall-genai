@@ -36,7 +36,11 @@ export class AppComponent implements OnInit {
     // LAB #3, #7, #8 and #9
     await this.engine!.resetChat();
     this.reply.set('…');
+    // const systemPrompt = `Here's the user's todo list: \`\`\`json${JSON.stringify(this.todos())}\`\`\``;
+    const systemPrompt = `Here's the user's todo list:
+      ${this.todos().map(todo => `* ${todo.text} (${todo.done ? 'done' : 'not done'})`).join('\n')}`;
     const messages: ChatCompletionMessageParam[] = [
+      { role: "system", content: systemPrompt },
       { role: "user", content: userPrompt }
     ];
     const reply = await this.engine!.chat.completions.create({ messages });
