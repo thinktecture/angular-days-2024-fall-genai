@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CreateMLCEngine, MLCEngine } from '@mlc-ai/web-llm';
+import { ChatCompletionMessageParam, CreateMLCEngine, MLCEngine } from '@mlc-ai/web-llm';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   protected engine?: MLCEngine;
 
   // LAB #3
+  protected readonly reply = signal('');
+
   // LAB #5
 
   async ngOnInit() {
@@ -30,6 +32,13 @@ export class AppComponent implements OnInit {
 
   async runPrompt(userPrompt: string) {
     // LAB #3, #7, #8 and #9
+    await this.engine!.resetChat();
+    this.reply.set('…');
+    const messages: ChatCompletionMessageParam[] = [
+      { role: "user", content: userPrompt }
+    ];
+    const reply = await this.engine!.chat.completions.create({ messages });
+    this.reply.set(reply.choices[0].message.content ?? '');
   }
 
   addTodo(text: string) {
