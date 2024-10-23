@@ -50,5 +50,7 @@ export class AppComponent implements OnInit {
 
   toggleTodo(index: number) {
     // LAB #6
+    this.todos.update(todos => todos.map((todo, todoIndex) =>
+        todoIndex === index ? { ...todo, done: !todo.done } : todo));
   }
 }
